@@ -1,0 +1,6 @@
+My name is Logan Sizemore.
+
+I have relevant experience with C++, C, HTML, CSS, JavaScript, and Bootstrap. I would like to be a part of the UI team.
+
+Montreal Cognitive Assessment (MoCA): This test involves memorizing a short list of words, naming objects shown in pictures, copying shapes and performing other tasks.
+This test takes about 15 minutes to complete.
