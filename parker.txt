@@ -1,0 +1,8 @@
+Name: Parker McCall
+Relevent Experience: No unity experience but would love to learn. Small
+amount of web development experience. Languages I know: C++, Python, C, C#, html, css, javascript
+Cognitive Test: Porteus Maze Test. In this test, patients are given a series of mazes to solve in 
+a particular amount of time. Scoring is calculated by adding up all the errors performed and the amount
+of time each maze took to complete. Errors include touching lines of the maze, lifting the finger/pin,
+or cutting corners. The Porteus Maze Test can be used to study many different pyscological disorders
+including: Alzheimer's disease, anxiety disorders, ADHD, and schizophrenia.
