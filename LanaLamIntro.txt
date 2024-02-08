@@ -1,0 +1,7 @@
+Lana Lam
+
+Languages: Java, Python, C++, C, HTML, CSS
+Experienced in UI with android and iOS apps
+Limited experience with SQL databases
+
+Line Counting Task - A measure of attentional bias to drug-related cues as reported by Passamonti et al (2017).
