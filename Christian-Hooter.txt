@@ -1,0 +1,9 @@
+My name is Christian Hooter.
+
+I have relevant experience in C and C++. I also have very briefly used C# in the past.
+
+
+Cognitive Test:
+The Groton Maze Learning Test- 
+User would need to figure out a path from a square grid, with a point system of how many squares they selected were right or wrong.
+
