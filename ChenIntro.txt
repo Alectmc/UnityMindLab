@@ -1,0 +1,11 @@
+Name: Shang Chen
+
+Relevant experiences:
+
+Prog langs: Familiar with c++, c, not familiar with c#
+Unity: First time using the program, no relevant experience
+
+
+Planned cognitive test: Adaptive Paced Auditory Serial Addition Test (Adaptive PASAT):
+Random set of numbers from 0-9 are spoken in a sequence. The user is tasked to find the summation of
+the current number and the previous number.
