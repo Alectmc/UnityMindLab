@@ -1,0 +1,5 @@
+Devon Whitaker
+
+C++, Javascript, Python, C, HTML, CSS
+
+Alcohol Dot Probe: This script measures attentional bias towards alcohol-related visual cues using a dot probe task (Miller & Fillmore, 2010). It is adaptable to domains other than alcohol.
