@@ -1,36 +1,16 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2639
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fmodern\fcharset0 CourierNewPSMT;\f1\fmodern\fcharset0 CourierNewPS-ItalicMT;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue0;\red219\green233\blue255;
-\red42\green49\blue64;\red226\green229\blue232;\red255\green255\blue255;}
-{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\csgray\c0\c0;\cssrgb\c88627\c93333\c100000;
-\cssrgb\c21569\c25490\c31765;\cssrgb\c90980\c91765\c92941;\cssrgb\c100000\c100000\c100000;}
-\margl1440\margr1440\vieww28300\viewh15100\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+Makenna Owens 
 
-\f0\fs24 \cf0 Makenna Owens \
-\
-Unity Experience - Created AI Racing Game \
-GUI in Visual Studio \
-Languages: C/C++, Python, C# \
-\
-\pard\pardeftab720\partightenfactor0
+Unity Experience - Created AI Racing Game 
+GUI in Visual Studio 
+Languages: C/C++, Python, C# 
 
-\f1\i\fs25\fsmilli12689 \cf0 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Cognitive test/questionnaire ideas: 
-\f0\i0 \
-\
-Trail Making Test:\
-\pard\pardeftab720\partightenfactor0
+Cognitive test/questionnaire ideas: 
 
-\fs25\fsmilli12600 \cf2 \cb3 \strokec4 A test of visual attention and task switching.\
-\
-Stroop Test:\
-\pard\pardeftab720\partightenfactor0
-\cf2 \strokec5 This test assesses cognitive flexibility and processing speed.\
-\
-\pard\pardeftab720\partightenfactor0
-\cf2 \strokec6 Mini\uc0\u8208 Cog Test:\
-\pard\pardeftab720\partightenfactor0
-\cf5 \cb7 \strokec5 A memory test where participants recall three words and a clock drawing task assessing cognitive function, language, visual-motor skills, and executive function. 
-\fs25\fsmilli12689 \cf0 \cb1 \strokec2 \
-}
+Trail Making Test:
+A test of visual attention and task switching.
+
+Stroop Test:
+This test assesses cognitive flexibility and processing speed.
+
+Mini Cog Test:
+A memory test where participants recall three words and a clock drawing task assessing cognitive function, language, visual-motor skills, and executive function. 
