@@ -5,7 +5,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638436097906166949
+      ticks: 638448192566732529
     m_Hash: 2396066456
   m_LockFileStatus:
     m_FilePath: C:/Users/chens/Documents/GitHub/UnityMindLab/Unity Mind Lab/Packages/packages-lock.json
@@ -13,7 +13,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638436097906176934
+      ticks: 638448192566762454
     m_Hash: 1979259462
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
@@ -114,8 +114,10 @@ m_ResolvedPackages:
     - 2.1.0-preview.6
     - 2.1.0
     - 2.2.0
+    - 2.3.1
     compatible:
     - 2.2.0
+    - 2.3.1
     verified: 2.2.0
   dependencies: []
   resolvedDependencies: []
@@ -305,9 +307,11 @@ m_ResolvedPackages:
     - 3.0.25
     - 3.0.26
     - 3.0.27
+    - 3.0.28
     compatible:
     - 3.0.27
-    verified: 3.0.27
+    - 3.0.28
+    verified: 3.0.28
   dependencies:
   - name: com.unity.ext.nunit
     version: 1.0.6
@@ -739,6 +743,7 @@ m_ResolvedPackages:
     - 3.2.0-pre.6
     - 3.2.0-pre.7
     - 3.2.0-pre.8
+    - 3.2.0-pre.9
     - 4.0.0-pre.1
     - 4.0.0-pre.2
     compatible:
@@ -753,6 +758,7 @@ m_ResolvedPackages:
     - 3.2.0-pre.6
     - 3.2.0-pre.7
     - 3.2.0-pre.8
+    - 3.2.0-pre.9
     verified: 3.0.8
   dependencies:
   - name: com.unity.ugui
