@@ -1,0 +1,17 @@
+Name: Sam Smallman
+
+Languages: Java, Javascript, Python, C, C++, HTML, PHP, CSS, Ruby
+
+minor SQL database knowledge (for a web survey system done in php/html/css)
+experience making a simple android event-tracking application in Java
+(messed around with GUI only a bit, my role was primarily backend)
+
+Cognitive Tests
+-------------------
+Benton Visual Retention Test: Gauges visual perception and memory.
+Method M wherein an image is shown for a bit before the testee 
+chooses the most similar image from a selection is easiest to 
+implement on a computer.
+
+Tower of London Test: Involving the matching of stacks of disk-like 
+blocks or beads on pegboards, this test could be simulated in Unity.
