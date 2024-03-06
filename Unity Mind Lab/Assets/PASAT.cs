@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class PASAT : MonoBehaviour
@@ -9,12 +10,15 @@ public class PASAT : MonoBehaviour
     public GameObject buttonPrefab;
     public TextMeshProUGUI stimuliText;
     public int maxSumValue;
-    public float stimulusInterval;
+    public float trialTime; // Used for time available for test trials in minutes
+    public float stimulusInterval; // Used for the interval between stimuli in seconds
     private List<int> stimuliValues = new List<int>();  // Used for storing each stimuli value 
     private List<int> sumValues = new List<int>();      // Used for storing each sum value
     private int stimuliIndex = 0;
     private int currentSum = 0;
     private int currentStimuli = 0;
+    private int userAnswer = -1;
+    //private int correctAnswers = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -23,10 +27,24 @@ public class PASAT : MonoBehaviour
         GenerateButtons();
     }
 
+    //Format for PASAT trials
+    //11 practice stimuli
+    //Lv1 Begin
+    //Call up Likert Scale
+    //Lv2 Begin
+    //stimulusInterval = 2;
+    //trialTIme = 5;
+    //Call up Likert Scale
+    //Lv3 Begin
+    //stimulusInterval = 1.5;
+    //trialTime = 10;
+    //Call up Likert Scale
+
     // Function that generates the Stimuli 
     IEnumerator GenerateStimuli()
     {
-        while (true)
+        float startTime = Time.time;
+        while (Time.time - startTime < trialTime * 60f) //while (true) [Original Code]
         {
             if (stimuliValues.Count == 0)
             {
@@ -83,7 +101,13 @@ public class PASAT : MonoBehaviour
             // Creates a button object child under responses object and sets text to i
             GameObject button = Instantiate(buttonPrefab.gameObject, currentRow.transform);
             TMP_Text buttonText = button.GetComponentInChildren<TMP_Text>();
+            Button btn = button.GetComponentInChildren<Button>();
             buttonText.text = i.ToString();
+            //btn.onClick.RemoveAllListeners();
+            btn.onClick.AddListener(() => { 
+                userAnswer = int.Parse(buttonText.text); 
+                //Debug.Log(userAnswer); 
+            });
 
             // If button is in last row, adjust x values accordingly to properly center 
             if (i > maxSumValue - buttonsInFinalRow)
