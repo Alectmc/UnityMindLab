@@ -164,7 +164,7 @@ MonoBehaviour:
   responses: {fileID: 424602423}
   buttonPrefab: {fileID: 4719448855548802592, guid: 8a30ebb3a6f25c8499c1511fe2b822c7, type: 3}
   stimuliText: {fileID: 1797077055}
-  maxSumValue: 10
+  maxSumValue: 20
   stimulusInterval: 3
 --- !u!224 &170907151
 RectTransform:
@@ -392,7 +392,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1000, y: -100}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &963194225
