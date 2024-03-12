@@ -9,7 +9,7 @@ public class HoverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Cursor.SetCursor(selectCursor, Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(selectCursor, new Vector2(256f,128f), CursorMode.Auto);
     }
 
     public void OnPointerExit(PointerEventData eventData)

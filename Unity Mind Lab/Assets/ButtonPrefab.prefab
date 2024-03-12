@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34db0d5dc7ebe534786a2fa1c510f167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectCursor: {fileID: 2800000, guid: 2414565a877c9e64493ca5837c5c203a, type: 3}
+  selectCursor: {fileID: 2800000, guid: 145176a270608b643940b05a38c48e58, type: 3}
 --- !u!1 &5135940567821519053
 GameObject:
   m_ObjectHideFlags: 0
