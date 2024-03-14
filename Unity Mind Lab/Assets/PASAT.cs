@@ -10,9 +10,10 @@ public class PASAT : MonoBehaviour
     public GameObject buttonPrefab;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI stimuliText;
+    public TextMeshProUGUI notification;
     public int maxSumValue;
-    public float trialTime; // Used for time available for test trials in minutes
-    public float stimulusInterval; // Used for the interval between stimuli in seconds
+    public float[] trialTime;                           // Used for time available for test trials in minutes
+    public float[] stimulusInterval;                    // Used for the interval between stimuli in seconds
     private List<int> stimuliValues = new List<int>();  // Used for storing each stimuli value 
     private List<int> sumValues = new List<int>();      // Used for storing each sum value
     private int stimuliIndex = 0;
@@ -20,6 +21,8 @@ public class PASAT : MonoBehaviour
     private int currentStimuli = 0;
     private int userAnswer = -1;
     private int correctAnswers = 0;
+    private int currentRound = 0;
+    private bool hasAnswered;
 
     // Start is called before the first frame update
     void Start()
@@ -28,24 +31,12 @@ public class PASAT : MonoBehaviour
         GenerateButtons();
     }
 
-    //Format for PASAT trials
-    //11 practice stimuli
-    //Lv1 Begin
-    //Call up Likert Scale
-    //Lv2 Begin
-    //stimulusInterval = 2;
-    //trialTime = 5;
-    //Call up Likert Scale
-    //Lv3 Begin
-    //stimulusInterval = 1.5;
-    //trialTime = 10;
-    //Call up Likert Scale
-
     // Function that generates the Stimuli 
     IEnumerator GenerateStimuli()
     {
         float startTime = Time.time;
-        while (Time.time - startTime < trialTime * 60f) //while (true) [Original Code]
+        float roundTime = trialTime[currentRound] * 60f;
+        while (Time.time - startTime < roundTime)
         {
             if (stimuliValues.Count == 0)
             {
@@ -55,18 +46,35 @@ public class PASAT : MonoBehaviour
                 stimuliValues.Add(currentStimuli);                          // Adds stimuli to the stimuliValues list 
                 stimuliIndex++;                                             // Integrates stimuliIndex
             }
-            else 
+            else
             {
+
                 // Display new stimuli every [stimulusInterval] seconds
-                yield return new WaitForSeconds(stimulusInterval);                                                 // Waits [stimulusInterval] seconds
+                yield return new WaitForSeconds(stimulusInterval[currentRound]);                                   // Waits [stimulusInterval] seconds
                 currentStimuli = UnityEngine.Random.Range(1, maxSumValue - stimuliValues[stimuliIndex - 1] + 1);   // Assigns currentStimuli to a random value: 1 - Max value possible for sum to be less than maxSumValue
                 currentSum = currentStimuli + stimuliValues[stimuliIndex - 1];                                     // Calculates sum of currentStimuli and previous stimuli
                 stimuliText.text = currentStimuli.ToString();                                                      // Sets stimuli text to the currentStimuli value
                 stimuliValues.Add(currentStimuli);                                                                 // Adds stimuli to the stimuliValues list 
                 sumValues.Add(currentSum);                                                                         // Adds sum to the sumValues list
+                hasAnswered = false;
                 scoreText.text = correctAnswers.ToString() + " / " + sumValues.Count.ToString();                   // Sets score test to correctAnswers/sumValues
                 stimuliIndex++;                                                                                    // Integrates stimuliIndex
             }
+        }
+
+        // If not final round, continue to next round
+        // To Do: Reset score each round
+        // To Do: Add likert scale between rounds
+        if (currentRound < trialTime.Length - 1)
+        {
+            currentRound++;
+            stimuliText.text = "Round " + (currentRound) + " complete";
+            yield return new WaitForSeconds(10f);
+            StartCoroutine(GenerateStimuli());
+        }
+        else
+        {
+            stimuliText.text = "Test Complete";
         }
     }
 
@@ -107,13 +115,9 @@ public class PASAT : MonoBehaviour
             Button btn = button.GetComponentInChildren<Button>();
             buttonText.text = i.ToString();
             //btn.onClick.RemoveAllListeners();
-            btn.onClick.AddListener(() => { 
+            btn.onClick.AddListener(() => {
                 userAnswer = int.Parse(buttonText.text);
-                if (userAnswer == currentSum)
-                {
-                    correctAnswers++;
-                    scoreText.text = correctAnswers.ToString() + " / " + sumValues.Count.ToString();
-                }
+                checkResponse();
                 //Debug.Log(userAnswer); 
             });
 
@@ -130,5 +134,35 @@ public class PASAT : MonoBehaviour
 
             buttonCount++;                                                                                        // Increment buttonCount
         }
+    }
+
+    void checkResponse()  //Checks the response to the currentSum IF not initial stimuli value and user has not answered to the sum
+    {
+        if (stimuliValues.Count > 1 && hasAnswered == false) //Allows only one response per sum, prevents the user from correcting their response after getting answer incorrect
+        {
+            string message = "";
+            if (userAnswer == currentSum)
+            {
+                correctAnswers++;
+                scoreText.text = correctAnswers.ToString() + " / " + sumValues.Count.ToString();  // Display current score
+                message = "Correct!";                                                             // Display "correct" message to the stimuli text box
+                hasAnswered = true;                                                               // Set current sum as answered by the user
+            }
+            else
+            {
+                scoreText.text = correctAnswers.ToString() + " / " + sumValues.Count.ToString();  // Display current score
+                message = "Incorrect!";                                                           // Display "correct" message to the stimuli text box
+                hasAnswered = true;                                                               // Set current sum as answered by the user
+            }
+            StartCoroutine(ShowNotification(message));
+        }
+    }
+
+    // Displays whether user answer is correct or incorrect for 1 second
+    IEnumerator ShowNotification(string message)
+    {
+        notification.text = message;
+        yield return new WaitForSeconds(1f);
+        notification.text = "";
     }
 }
