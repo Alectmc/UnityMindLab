@@ -163,6 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   responses: {fileID: 424602423}
   buttonPrefab: {fileID: 4719448855548802592, guid: 8a30ebb3a6f25c8499c1511fe2b822c7, type: 3}
+  scoreText: {fileID: 1793771400}
   stimuliText: {fileID: 1797077055}
   maxSumValue: 20
   trialTime: 3

@@ -8,6 +8,7 @@ public class PASAT : MonoBehaviour
 {
     public Transform responses;
     public GameObject buttonPrefab;
+    public TextMeshProUGUI scoreText;
     public TextMeshProUGUI stimuliText;
     public int maxSumValue;
     public float trialTime; // Used for time available for test trials in minutes
@@ -18,7 +19,7 @@ public class PASAT : MonoBehaviour
     private int currentSum = 0;
     private int currentStimuli = 0;
     private int userAnswer = -1;
-    //private int correctAnswers = 0;
+    private int correctAnswers = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,7 @@ public class PASAT : MonoBehaviour
     //Call up Likert Scale
     //Lv2 Begin
     //stimulusInterval = 2;
-    //trialTIme = 5;
+    //trialTime = 5;
     //Call up Likert Scale
     //Lv3 Begin
     //stimulusInterval = 1.5;
@@ -62,6 +63,8 @@ public class PASAT : MonoBehaviour
                 currentSum = currentStimuli + stimuliValues[stimuliIndex - 1];                                     // Calculates sum of currentStimuli and previous stimuli
                 stimuliText.text = currentStimuli.ToString();                                                      // Sets stimuli text to the currentStimuli value
                 stimuliValues.Add(currentStimuli);                                                                 // Adds stimuli to the stimuliValues list 
+                sumValues.Add(currentSum);                                                                         // Adds sum to the sumValues list
+                scoreText.text = correctAnswers.ToString() + " / " + sumValues.Count.ToString();                   // Sets score test to correctAnswers/sumValues
                 stimuliIndex++;                                                                                    // Integrates stimuliIndex
             }
         }
@@ -105,7 +108,12 @@ public class PASAT : MonoBehaviour
             buttonText.text = i.ToString();
             //btn.onClick.RemoveAllListeners();
             btn.onClick.AddListener(() => { 
-                userAnswer = int.Parse(buttonText.text); 
+                userAnswer = int.Parse(buttonText.text);
+                if (userAnswer == currentSum)
+                {
+                    correctAnswers++;
+                    scoreText.text = correctAnswers.ToString() + " / " + sumValues.Count.ToString();
+                }
                 //Debug.Log(userAnswer); 
             });
 
