@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class PASAT : MonoBehaviour
@@ -21,8 +22,11 @@ public class PASAT : MonoBehaviour
     private int currentStimuli = 0;
     private int userAnswer = -1;
     private int correctAnswers = 0;
-    private int currentRound = 0;
+    private static int currentRound = 0;                // Set to static in case of scene change for likert scale
     private bool hasAnswered;
+
+    //Defining practice mode status, should be toggled on/off via settings text file
+    public static bool practiceMode = true;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +34,21 @@ public class PASAT : MonoBehaviour
         StartCoroutine(GenerateStimuli());
         GenerateButtons();
     }
+
+    //Format for PASAT trials
+    //11 practice stimuli
+    //Lv1 Begin
+    //stimulusInterval = 3, trialTime = 3
+    //Call up Likert Scale
+    //Lv2 Begin
+    //stimulusInterval = 2;
+    //trialTime = 5;
+    //Call up Likert Scale
+    //Lv3 Begin
+    //stimulusInterval = 1.5;
+    //trialTime = 10;
+    //Call up Likert Scale
+
 
     // Function that generates the Stimuli 
     IEnumerator GenerateStimuli()
@@ -59,6 +78,14 @@ public class PASAT : MonoBehaviour
                 hasAnswered = false;
                 scoreText.text = correctAnswers.ToString() + " / " + sumValues.Count.ToString();                   // Sets score test to correctAnswers/sumValues
                 stimuliIndex++;                                                                                    // Integrates stimuliIndex
+                if ((practiceMode == true) && (sumValues.Count > 11)) //If practiceMode is true, check if sumValue is above 11, terminate current trial if true and do not save result. (check if extra sum was generated prior limiting stimuli sum bound)
+                {
+                    scoreText.text = correctAnswers.ToString() + " / " + (sumValues.Count - 1).ToString();
+                    practiceMode = false;
+                    stimuliText.text = "Practice round complete";
+                    yield return new WaitForSeconds(5f);
+                    SceneManager.LoadScene("InstructionScene");           //Returns to instruction scene, do not run likert scale.
+                }
             }
         }
 
@@ -69,8 +96,10 @@ public class PASAT : MonoBehaviour
         {
             currentRound++;
             stimuliText.text = "Round " + (currentRound) + " complete";
-            yield return new WaitForSeconds(10f);
-            StartCoroutine(GenerateStimuli());
+            yield return new WaitForSeconds(5f);
+            SceneManager.LoadScene("InstructionScene");
+            //yield return new WaitForSeconds(10f);
+            //StartCoroutine(GenerateStimuli());
         }
         else
         {
@@ -115,7 +144,7 @@ public class PASAT : MonoBehaviour
             Button btn = button.GetComponentInChildren<Button>();
             buttonText.text = i.ToString();
             //btn.onClick.RemoveAllListeners();
-            btn.onClick.AddListener(() => {
+            btn.onClick.AddListener(() => { 
                 userAnswer = int.Parse(buttonText.text);
                 checkResponse();
                 //Debug.Log(userAnswer); 
@@ -135,7 +164,6 @@ public class PASAT : MonoBehaviour
             buttonCount++;                                                                                        // Increment buttonCount
         }
     }
-
     void checkResponse()  //Checks the response to the currentSum IF not initial stimuli value and user has not answered to the sum
     {
         if (stimuliValues.Count > 1 && hasAnswered == false) //Allows only one response per sum, prevents the user from correcting their response after getting answer incorrect
