@@ -12,6 +12,7 @@ public class PASAT : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI stimuliText;
     public TextMeshProUGUI notification;
+    public TextMeshProUGUI message;
     public int maxSumValue;
     public float[] trialTime;                           // Used for time available for test trials in minutes
     public float[] stimulusInterval;                    // Used for the interval between stimuli in seconds
@@ -24,8 +25,9 @@ public class PASAT : MonoBehaviour
     private int correctAnswers = 0;
     private static int currentRound = 0;                // Set to static in case of scene change for likert scale
     private bool hasAnswered;
+    public Slider progressBar;
 
-    //Defining practice mode status, should be toggled on/off via settings text file
+    // Defining practice mode status, should be toggled on/off via settings text file
     public static bool practiceMode = true;
 
     // Start is called before the first frame update
@@ -33,22 +35,8 @@ public class PASAT : MonoBehaviour
     {
         StartCoroutine(GenerateStimuli());
         GenerateButtons();
+        StartCoroutine(Timer());
     }
-
-    //Format for PASAT trials
-    //11 practice stimuli
-    //Lv1 Begin
-    //stimulusInterval = 3, trialTime = 3
-    //Call up Likert Scale
-    //Lv2 Begin
-    //stimulusInterval = 2;
-    //trialTime = 5;
-    //Call up Likert Scale
-    //Lv3 Begin
-    //stimulusInterval = 1.5;
-    //trialTime = 10;
-    //Call up Likert Scale
-
 
     // Function that generates the Stimuli 
     IEnumerator GenerateStimuli()
@@ -67,6 +55,8 @@ public class PASAT : MonoBehaviour
             }
             else
             {
+                float timeRemaining = roundTime - Time.time;
+                progressBar.value = Mathf.Clamp01(timeRemaining / (trialTime[currentRound] * 60f));
 
                 // Display new stimuli every [stimulusInterval] seconds
                 yield return new WaitForSeconds(stimulusInterval[currentRound]);                                   // Waits [stimulusInterval] seconds
@@ -78,13 +68,14 @@ public class PASAT : MonoBehaviour
                 hasAnswered = false;
                 scoreText.text = correctAnswers.ToString() + " / " + sumValues.Count.ToString();                   // Sets score test to correctAnswers/sumValues
                 stimuliIndex++;                                                                                    // Integrates stimuliIndex
-                if ((practiceMode == true) && (sumValues.Count > 11)) //If practiceMode is true, check if sumValue is above 11, terminate current trial if true and do not save result. (check if extra sum was generated prior limiting stimuli sum bound)
+                if ((practiceMode == true) && (sumValues.Count > 11))                                              // If practiceMode is true, check if sumValue is above 11, terminate current trial if true and do not save result. (check if extra sum was generated prior limiting stimuli sum bound)
                 {
                     scoreText.text = correctAnswers.ToString() + " / " + (sumValues.Count - 1).ToString();
                     practiceMode = false;
-                    stimuliText.text = "Practice round complete";
+                    stimuliText.text = "";
+                    message.text = "Practice Round Complete";
                     yield return new WaitForSeconds(5f);
-                    SceneManager.LoadScene("InstructionScene");           //Returns to instruction scene, do not run likert scale.
+                    SceneManager.LoadScene("InstructionScene");           // Returns to instruction scene, do not run likert scale.
                 }
             }
         }
@@ -95,11 +86,10 @@ public class PASAT : MonoBehaviour
         if (currentRound < trialTime.Length - 1)
         {
             currentRound++;
-            stimuliText.text = "Round " + (currentRound) + " complete";
+            stimuliText.text = "";
+            message.text = "Round " + (currentRound) + " complete";
             yield return new WaitForSeconds(5f);
             SceneManager.LoadScene("InstructionScene");
-            //yield return new WaitForSeconds(10f);
-            //StartCoroutine(GenerateStimuli());
         }
         else
         {
@@ -111,7 +101,7 @@ public class PASAT : MonoBehaviour
     void GenerateButtons()
     {
         int buttonCount = 0, rowSize = 10;
-        float buttonSize = 100f, buttonSpacing = 20f, rowX, rowY = 0f;
+        float buttonSize = 150f, buttonSpacing = 20f, rowX, rowY = 0f;
         GameObject currentRow = null;
 
         float totalWidth = rowSize * buttonSize + (rowSize - 1) * buttonSpacing;                            // Total width of a completely filled row
@@ -192,5 +182,22 @@ public class PASAT : MonoBehaviour
         notification.text = message;
         yield return new WaitForSeconds(1f);
         notification.text = "";
+    }
+    
+    // Function that controls timer slider
+    IEnumerator Timer()
+    {
+        while (true)
+        {
+            float totalTime = stimulusInterval[currentRound];
+            float timeRemaining = totalTime;
+            while (timeRemaining > 0)
+            {
+                timeRemaining -= Time.deltaTime;
+                progressBar.value = timeRemaining / totalTime;
+                yield return null;
+            }
+            progressBar.value = 0f;
+        }
     }
 }
