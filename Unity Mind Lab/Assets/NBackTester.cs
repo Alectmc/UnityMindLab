@@ -30,7 +30,7 @@ public class NBackTester : MonoBehaviour
             Debug.Log(nBack.GetCurrentChar());
         }
         if (Input.GetKeyDown("d")) {
-            nBack.EnterChoice(true);
+            nBack.EnterChoice(false);
             Debug.Log(nBack.GetCurrentChar());
         }
         

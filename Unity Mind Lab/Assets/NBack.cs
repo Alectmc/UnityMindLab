@@ -6,6 +6,7 @@ public class NBack : MonoBehaviour
 {
     
     //Only contains a single variable, but can be modified later for flexibility
+    //Stores correct and response time for later exporting list to .csv
     public class NBackEntry {
         
         public char letter;
@@ -21,6 +22,7 @@ public class NBack : MonoBehaviour
     public int n; //How far back should the element match
     public float maxResponseTime; //How long user has to respond
     public float responseTime; //How long the user is taking to respond
+    public float chanceSame; //Percent chance a new entry is the same as the Nth previous entry
     public List<NBackEntry> entries; //List of entries, 1 is appended each turn
     
     public int round; //Starts from 1
@@ -33,9 +35,11 @@ public class NBack : MonoBehaviour
     //List of possible characters for entries
     private string candidates = "abcdefghijklmnopqrstuvwxyz";
     
+    
+    //Returns true if the N-previous entry is the same as the current entry
     private bool EntryMatches() {
-        if(round >= n) {
-            return entries[round - n].letter == entries[round - 1].letter;
+        if(round-1 >= n) {
+            return entries[round - n - 1].letter == entries[round - 1].letter;
         }
         return false;
     }
@@ -58,6 +62,7 @@ public class NBack : MonoBehaviour
         MakeEntry();
     }
     
+    //Skip round for user ran out of time
     public void SkipChoice() {
         incorrect++;
         entries[round-1].correct = false;
@@ -67,7 +72,18 @@ public class NBack : MonoBehaviour
         Debug.Log("Incorrect! (Ran out of time)");
     }
     
+    //Generate a new entry with a random letter
     private void MakeEntry() {
+        
+        //Generate chance if to use the N-th previous letter
+        int c = Random.Range(1,101);
+        if(round-1 >= n && c <= chanceSame) {
+            //Generate same letter as N-th previous letter
+            NBackEntry sameNewEntry = new NBackEntry(entries[round - n].letter);
+            entries.Add(sameNewEntry);
+            round++;
+            return;
+        }
         
         int i = Random.Range(0,candidates.Length);
         NBackEntry newEntry = new NBackEntry(candidates[i]);
