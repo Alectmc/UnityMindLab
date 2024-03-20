@@ -3,7 +3,12 @@ guid: a06800e11adfdbb468d9833b91f710da
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - responses: {instanceID: 0}
+  - buttonPrefab: {instanceID: 0}
+  - scoreText: {instanceID: 0}
+  - stimuliText: {instanceID: 0}
+  - notification: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
