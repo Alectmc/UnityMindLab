@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Diagnostics;
 
 public class PASAT : MonoBehaviour
 {
@@ -26,7 +27,8 @@ public class PASAT : MonoBehaviour
     private static int currentRound = 0;                // Set to static in case of scene change for likert scale
     private bool hasAnswered;
     public Slider progressBar;
-    public static int currentBatches;   // batches of 2 stimuli 
+    public static int currentBatches;   // batches of 2 stimuli
+    public AudioClip[] numberAudioClips; // audio for stimuli 
 
     // Defining practice mode status, should be toggled on/off via settings text file
     public static bool practiceMode = true;
@@ -57,7 +59,7 @@ public class PASAT : MonoBehaviour
                 stimuliText.text = currentStimuli.ToString();               // Sets stimuli text to the currentStimuli value 
                 stimuliValues.Add(currentStimuli);                          // Adds stimuli to the stimuliValues list 
                 stimuliIndex++;                                             // Integrates stimuliIndex
-                //stimuliCount++;
+                PlayNumberAudio(currentStimuli+1);                          // playing intitial stimuli audio 
 
             }
             else
@@ -70,11 +72,12 @@ public class PASAT : MonoBehaviour
                 currentStimuli = UnityEngine.Random.Range(1, maxSumValue - stimuliValues[stimuliIndex - 1] + 1);   // Assigns currentStimuli to a random value: 1 - Max value possible for sum to be less than maxSumValue
                 currentSum = currentStimuli + stimuliValues[stimuliIndex - 1];                                     // Calculates sum of currentStimuli and previous stimuli
                 stimuliText.text = currentStimuli.ToString();                                                      // Sets stimuli text to the currentStimuli value
+              
                 stimuliValues.Add(currentStimuli);                                                                 // Adds stimuli to the stimuliValues list 
                 sumValues.Add(currentSum);                                                                         // Adds sum to the sumValues list
                 hasAnswered = false;
 
-                stimuliCount++;
+                stimuliCount++;                                                                                    // increasing stimuli count 
 
                 // updated stimuli batch count every 2 stimuli 
                 if (stimuliCount % 2 == 0)
@@ -82,7 +85,7 @@ public class PASAT : MonoBehaviour
                     currentBatches++;
                 }
 
-                scoreText.text = correctAnswers.ToString() + " / " + currentBatches.ToString();
+                scoreText.text = correctAnswers.ToString() + " / " + currentBatches.ToString();                    // updatiing scoreboard 
                 stimuliIndex++;                                                                                    // Integrates stimuliIndex
                 if ((practiceMode == true) && (sumValues.Count > 11))                                              // If practiceMode is true, check if sumValue is above 11, terminate current trial if true and do not save result. (check if extra sum was generated prior limiting stimuli sum bound)
                 {
@@ -94,6 +97,7 @@ public class PASAT : MonoBehaviour
                     yield return new WaitForSeconds(5f);
                     SceneManager.LoadScene("InstructionScene");           // Returns to instruction scene, do not run likert scale.
                 }
+                PlayNumberAudio(currentStimuli+1);                        // playing stimuli audio 
             }
         }
 
@@ -216,5 +220,22 @@ public class PASAT : MonoBehaviour
             }
             progressBar.value = 0f;
         }
+    }
+    void PlayNumberAudio(int number)
+    {
+        if (number >= 1 && number <= numberAudioClips.Length) 
+        {
+            // creating a temp GameObject to play the audio clip 
+            GameObject audioObject = new GameObject("TempAudio");
+            AudioSource audioSource = audioObject.AddComponent<AudioSource>(); 
+            audioSource.clip = numberAudioClips[number - 1]; // set the audio clip
+
+            // play the stimulis audio clip
+            audioSource.Play();
+
+            // destroying the temp GameObject after the audio has finished 
+            Destroy(audioObject, numberAudioClips[number - 1].length);
+        }
+      
     }
 }
