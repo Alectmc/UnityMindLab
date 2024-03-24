@@ -36,7 +36,7 @@ public class InstructionUI : MonoBehaviour
         if (practiceMode == true) //Display practice mode instruction
         {
             welcomeText.text = "Welcome to the PASAT test!";
-            instructText.text = "Practice round is active, the system will display 11 practice stimuli before test proper.";
+            instructText.text = "Practice round is active, the system will display six practice rounds before official test begins.";
             timeIntervalInfo.text = "Practice trial time: " + (trialTime[currentRound]) + " minutes / Stimuli value interval time: " + (stimulusInterval[currentRound]) + " seconds";
             practiceMode = false;
         }
