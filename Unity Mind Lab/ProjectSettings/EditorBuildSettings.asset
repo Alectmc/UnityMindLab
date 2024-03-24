@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PASAT.unity
     guid: 78b969b0c76385b4da993b3e314408e7
+  - enabled: 1
+    path: Assets/Scenes/LikertScale.unity
+    guid: 2b23a8acf6888c242aade6d6608ecc0f
   m_configObjects: {}

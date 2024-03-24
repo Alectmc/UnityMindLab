@@ -103,19 +103,19 @@ public class PASAT : MonoBehaviour
 
         // If not final round, continue to next round
         // To Do: Reset score each round
-        // To Do: Add likert scale between rounds
-        if (currentRound < trialTime.Length - 1)
-        {
+        //if (currentRound < trialTime.Length - 1)
+        //{
             currentRound++;
             stimuliText.text = "";
             message.text = "Round " + (currentRound) + " complete";
             yield return new WaitForSeconds(5f);
-            SceneManager.LoadScene("InstructionScene");
-        }
-        else
-        {
-            stimuliText.text = "Test Complete";
-        }
+            SceneManager.LoadScene("LikertScale");
+            //SceneManager.LoadScene("InstructionScene");
+        //}
+        //else
+        //{
+            //stimuliText.text = "Test Complete";
+        //}
     }
 
     // Function that generates the buttons based on the maxSumValue
