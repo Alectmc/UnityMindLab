@@ -1,6 +1,0 @@
-Author: Omar Lagunas
-Relevant experience:
-	Languages: C, C++, C#, HTML, CSS, SQL
-	Some experience with relational databases
-
-    Mini-Cog test
