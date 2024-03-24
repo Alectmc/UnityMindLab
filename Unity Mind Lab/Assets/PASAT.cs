@@ -27,7 +27,7 @@ public class PASAT : MonoBehaviour
     private static int currentRound = 0;                // Set to static in case of scene change for likert scale
     private bool hasAnswered;
     public Slider progressBar;
-    public static int currentBatches;   // batches of 2 stimuli
+   
     public AudioClip[] numberAudioClips; // audio for stimuli 
 
     // Defining practice mode status, should be toggled on/off via settings text file
@@ -79,21 +79,17 @@ public class PASAT : MonoBehaviour
 
                 stimuliCount++;                                                                                    // increasing stimuli count 
 
-                // updated stimuli batch count every 2 stimuli 
-                if (stimuliCount % 2 == 0)
-                {
-                    currentBatches++;
-                }
 
-                scoreText.text = correctAnswers.ToString() + " / " + currentBatches.ToString();                    // updatiing scoreboard 
+
+                scoreText.text = correctAnswers.ToString() + " / " + sumValues.Count.ToString();                 // updatiing scoreboard 
                 stimuliIndex++;                                                                                    // Integrates stimuliIndex
                 if ((practiceMode == true) && (sumValues.Count > 11))                                              // If practiceMode is true, check if sumValue is above 11, terminate current trial if true and do not save result. (check if extra sum was generated prior limiting stimuli sum bound)
                 {
-                    scoreText.text = correctAnswers.ToString() + " / " + currentBatches.ToString();
+                    scoreText.text = correctAnswers.ToString() + " / " + (sumValues.Count-1).ToString();
                     practiceMode = false;
                     stimuliText.text = "";
                     message.text = "Practice Round Complete";
-                    currentBatches = 0;
+                   
                     yield return new WaitForSeconds(5f);
                     SceneManager.LoadScene("InstructionScene");           // Returns to instruction scene, do not run likert scale.
                 }
@@ -183,13 +179,13 @@ public class PASAT : MonoBehaviour
             if (userAnswer == currentSum)
             {
                 correctAnswers++;
-                scoreText.text = correctAnswers.ToString() + " / " + currentBatches.ToString(); // Display current score
+                scoreText.text = correctAnswers.ToString() + " / " + sumValues.Count.ToString();// Display current score
                 message = "Correct!";                                                             // Display "correct" message to the stimuli text box
                 hasAnswered = true;                                                               // Set current sum as answered by the user
             }
             else
             {
-                scoreText.text = correctAnswers.ToString() + " / " + currentBatches.ToString();  // Display current score
+                scoreText.text = correctAnswers.ToString() + " / " + sumValues.Count.ToString(); // Display current score
                 message = "Incorrect!";                                                           // Display "correct" message to the stimuli text box
                 hasAnswered = true;                                                               // Set current sum as answered by the user
             }
