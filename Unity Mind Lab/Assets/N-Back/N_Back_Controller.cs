@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 
 public class N_Back_Controller : MonoBehaviour
@@ -17,10 +18,15 @@ public class N_Back_Controller : MonoBehaviour
 
     private int moveCount = 0; // Counter to track the number of movements
     private int stimulusCount=0;//Counts total stimuli
-    public int totalMovements = 25; // Total number of movements
+    public int totalStimuli = 25; // Total number of movements
+
+    public int numRuns = 1;
+
+    private int runCount=0;
     private bool isMovingToFront = false; // Flag to track if a movement to the front is in progress
     private bool isMovingToBack = false; // Flag to track if a movement to the back is in progress
     private float movementInterval = 2000f; // Time interval between movements in milliseconds
+    private float intervalChange=0f;
     private float nextMovementTime = 0f; // Time of the next movement
     private int lastMovedLetterIndex = -1; // Index of the last letter moved to the front
 
@@ -28,12 +34,20 @@ public class N_Back_Controller : MonoBehaviour
 
     private string nthLetter;//for holding string of nth letter back
 
+    private bool buttonsBool =false;//if true, use mouseclick on buttons for input. if false, use keys "y" and "n"
+
     private List<string> stimuli = new List<string>(); // List to store the selected letters
     private List<string> answers = new List<string>(); // List to store user answers
 
+    private List<float> timeStampAnswer = new List<float>();
+
+    private List<float> timeStampStimuli = new List<float>();
+
+    private List<int> runList = new List<int>();
+
     private bool answered;//flag for whether the user answered or not
 
-    private float nthProb=0.2f;
+    private float nthProb=0.15f;
 
     private Color goodColor = new Vector4(0f,1f,0f,1f);
 
@@ -43,62 +57,31 @@ public class N_Back_Controller : MonoBehaviour
 
     private string selectedLetter ="";
 
+    private string outFile = "C:/Users/layto/OneDrive/Desktop/se/UnityMindLab/Unity Mind Lab/Assets/N-Back/test.csv";
+
     
 
 
 
     void Start()
     {
+
+        // Path to the text file in the Assets folder
+        string settingsPath = Application.dataPath +"/N-Back/N_Back_Settings.txt";
+        string outFile = Application.dataPath + "/N-Back/test.csv";
         
-        //start letters
+
+        Debug.Log("File path: " + settingsPath); // Debug log the file path
+        
+        ReadSettingsFromFile(settingsPath);
+
+        timer.StartTimer();
     }
 
     void Update()
     {
-        // Initialize the next movement time when the timer starts
-        if (timer.isRunning && nextMovementTime == 0f)
-        {
-            nextMovementTime = timer.GetElapsedTimeMilliseconds();
-        }
+        test();
 
-        // Check if the timer is running and the total number of movements hasn't been reached
-        if (timer.isRunning && stimulusCount < totalMovements)
-        {
-            // If it's time to move the object to the front
-            if (isMovingToFront && timer.GetElapsedTimeMilliseconds() >= nextMovementTime)
-            {
-                ShowButton();
-            }
-
-            // If it's time to move the object to the back
-            if (isMovingToBack && timer.GetElapsedTimeMilliseconds() >= nextMovementTime)
-            {
-                HideButton();
-            }
-
-            // If neither movement is in progress, determine the next movement
-            if (!isMovingToFront && !isMovingToBack)
-            {
-                if (moveCount % 2 == 0)
-                {
-                    isMovingToFront = true;
-                }
-                else
-                {
-                    isMovingToBack = true;
-                }
-
-                nextMovementTime = timer.GetElapsedTimeMilliseconds() + movementInterval;
-            }
-        }
-
-
-
-
-        if(Input.GetMouseButtonDown(0)&& !isMovingToFront)//listener, with a guard to not go when the button is not shown.
-        {
-            GetAnswer();
-        }
     }
 
     void ShowButton()
@@ -131,6 +114,11 @@ public class N_Back_Controller : MonoBehaviour
 
         answers.Add("None");
 
+        runList.Add(runCount);
+
+        timeStampStimuli.Add(timer.GetElapsedTimeMilliseconds());
+        timeStampAnswer.Add(movementInterval);
+
         
 
         
@@ -157,8 +145,12 @@ public class N_Back_Controller : MonoBehaviour
 
         buttonText.text = "";
 
-        nthLetter = stimuli[stimulusCount];
+        if(stimulusCount<nthNumber){
 
+        }
+        else{
+            nthLetter = stimuli[stimulusCount-nthNumber+1];
+        }
         // Update flags and move count
         isMovingToBack = false;
         moveCount++;
@@ -171,17 +163,131 @@ public class N_Back_Controller : MonoBehaviour
             
         }
         else{
+            
+
             CanvasRenderer buttonRenderer = letterButton.GetComponent<CanvasRenderer>();
             if(selectedLetter ==nthLetter){
                 answers[stimulusCount] ="Y";//adds a y to answers list
                 buttonRenderer.SetColor(goodColor);//sets button to green
+                
 
             }
             else{
                 answers[stimulusCount]="N";//ands an n to answers list
                 buttonRenderer.SetColor(badColor);//sets button to red
             }
-            Debug.Log(answers.ToString());
+            timeStampAnswer[stimulusCount]=timer.GetElapsedTimeMilliseconds();
         }
     }
+
+    // Function to read settings from the file
+    private void ReadSettingsFromFile(string path)
+    {
+        string[] lines = File.ReadAllLines(path);
+        movementInterval = float.Parse(lines[1]);
+        numRuns = int.Parse(lines[3]);
+        nthNumber = int.Parse(lines[5]);
+        totalStimuli = int.Parse(lines[7]);
+        nthProb = float.Parse(lines[9]);
+        //buttonsBool = bool.Parse(lines[11]);
+        //outFile = lines[13];
+
+
+    }
+
+    private void WriteToFile(string outFile){
+        string header = "run,stimuli,answer,StimulusTime,AnswerTime"; 
+
+        // Open the file for writing
+        using (StreamWriter writer = new StreamWriter(outFile))
+        {
+            // Write the header to the file
+            writer.WriteLine(header);
+            
+            // Write each line of data
+            for (int i = 0; i < stimuli.Count; i++)
+            {
+                Debug.Log("writing");
+                string line = $"{runList[i]},{stimuli[i]},{answers[i]},{timeStampStimuli[i]},{timeStampAnswer[i]}";
+                writer.WriteLine(line);
+            }
+        }
+    }
+
+
+    private void test(){
+                // Initialize the next movement time when the timer starts
+        if (timer.isRunning && nextMovementTime == 0f)
+        {
+            nextMovementTime = timer.GetElapsedTimeMilliseconds();
+        }
+
+        // Check if the timer is running and the total number of movements hasn't been reached
+        if (timer.isRunning && stimulusCount < totalStimuli)
+        {
+            // If it's time to move the object to the front
+            if (isMovingToFront && timer.GetElapsedTimeMilliseconds() >= nextMovementTime)
+            {
+                ShowButton();
+            }
+
+            // If it's time to move the object to the back
+            if (isMovingToBack && timer.GetElapsedTimeMilliseconds() >= nextMovementTime)
+            {
+                HideButton();
+            }
+
+            // If neither movement is in progress, determine the next movement
+            if (!isMovingToFront && !isMovingToBack)
+            {
+                if (moveCount % 2 == 0)
+                {
+                    isMovingToFront = true;
+                }
+                else
+                {
+                    isMovingToBack = true;
+                }
+
+                nextMovementTime = timer.GetElapsedTimeMilliseconds() + movementInterval;
+            }
+        }
+
+        if(timer.isRunning&& stimulusCount>=totalStimuli&&runCount<numRuns){
+            runCount++;
+            stimulusCount=0;
+            moveCount=0;
+            isMovingToBack = false;
+            nextMovementTime = timer.GetElapsedTimeMilliseconds() +3000f;
+            movementInterval= movementInterval - intervalChange;
+            buttonText.text = "Run " + (runCount+1).ToString();
+
+
+
+
+
+        }
+
+        if(runCount==numRuns && stimulusCount>=totalStimuli && timer.isRunning){//ending test and writing to csv
+            timer.StopTimer();
+            Debug.Log("end test");
+            WriteToFile(outFile);
+
+
+        }
+
+         if(Input.GetMouseButtonDown(0)&& !isMovingToFront)//listener, with a guard to not go when the button is not shown.
+        {
+            GetAnswer();
+        }
+    }
+
+
+
+
+
+
+
 }
+
+
