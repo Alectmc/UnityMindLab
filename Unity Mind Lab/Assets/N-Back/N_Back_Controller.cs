@@ -68,7 +68,7 @@ public class N_Back_Controller : MonoBehaviour
 
         // Path to the text file in the Assets folder
         string settingsPath = Application.dataPath +"/N-Back/N_Back_Settings.txt";
-        string outFile = Application.dataPath + "/N-Back/test.csv";
+        outFile = Application.dataPath + "/N-Back/test.csv";
         
 
         Debug.Log("File path: " + settingsPath); // Debug log the file path
