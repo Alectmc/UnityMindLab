@@ -18,6 +18,7 @@ public class N_Back_Controller : MonoBehaviour
 
     private int moveCount = 0; // Counter to track the number of movements
     private int stimulusCount=0;//Counts total stimuli
+    private int outputCount=0;//holds index for output to csv
     public int totalStimuli = 25; // Total number of movements
 
     public int numRuns = 1;
@@ -117,7 +118,7 @@ public class N_Back_Controller : MonoBehaviour
         runList.Add(runCount);
 
         timeStampStimuli.Add(timer.GetElapsedTimeMilliseconds());
-        timeStampAnswer.Add(movementInterval);
+        timeStampAnswer.Add(0f);
 
         
 
@@ -155,6 +156,7 @@ public class N_Back_Controller : MonoBehaviour
         isMovingToBack = false;
         moveCount++;
         stimulusCount++;
+        outputCount++;
     }
 
     public void GetAnswer(){//to get answers from user based on mouseclick
@@ -167,16 +169,16 @@ public class N_Back_Controller : MonoBehaviour
 
             CanvasRenderer buttonRenderer = letterButton.GetComponent<CanvasRenderer>();
             if(selectedLetter ==nthLetter){
-                answers[stimulusCount] ="Y";//adds a y to answers list
+                answers[outputCount] ="Y";//adds a y to answers list
                 buttonRenderer.SetColor(goodColor);//sets button to green
                 
 
             }
             else{
-                answers[stimulusCount]="N";//ands an n to answers list
+                answers[outputCount]="N";//ands an n to answers list
                 buttonRenderer.SetColor(badColor);//sets button to red
             }
-            timeStampAnswer[stimulusCount]=timer.GetElapsedTimeMilliseconds();
+            timeStampAnswer[outputCount]=timer.GetElapsedTimeMilliseconds();
         }
     }
 
