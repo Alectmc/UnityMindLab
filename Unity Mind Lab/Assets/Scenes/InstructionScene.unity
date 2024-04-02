@@ -837,14 +837,7 @@ MonoBehaviour:
   welcomeText: {fileID: 1863506830}
   instructText: {fileID: 1516895707}
   timeIntervalInfo: {fileID: 1498988230}
-  trialTime:
-  - 3
-  - 5
-  - 10
-  stimulusInterval:
-  - 3
-  - 2
-  - 1.5
+  settings: {fileID: 11400000, guid: ade0e30bf927a5144b7700dc5085fec5, type: 2}
 --- !u!1 &1860319284
 GameObject:
   m_ObjectHideFlags: 0
