@@ -14,4 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LikertScale.unity
     guid: 2b23a8acf6888c242aade6d6608ecc0f
+  - enabled: 1
+    path: Assets/Scenes/N-back_start-screen.unity
+    guid: cfd0bcffc2de62a4ca86d017d066c49e
+  - enabled: 1
+    path: Assets/Scenes/N-BACK.unity
+    guid: 8593453ca732e0247a64ad32e75a456a
+  - enabled: 1
+    path: Assets/Scenes/N-BACK-SETTINGS.unity
+    guid: 04a3501f9b7e85641ab01d9f090fec09
   m_configObjects: {}
