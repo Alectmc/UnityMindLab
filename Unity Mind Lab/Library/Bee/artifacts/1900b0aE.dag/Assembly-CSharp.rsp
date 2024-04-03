@@ -347,6 +347,8 @@
 "Assets/InstructionUI.cs"
 "Assets/N-Back/ChangeScene_nback.cs"
 "Assets/N-Back/N_Back_Controller.cs"
+"Assets/N-Back/N_Back_Default_Settings.cs"
+"Assets/N-Back/N_Back_Settings_Controller.cs"
 "Assets/N-Back/Timer.cs"
 "Assets/N-Back/TimerUI.cs"
 "Assets/PASAT.cs"
