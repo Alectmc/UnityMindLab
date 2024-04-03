@@ -266,8 +266,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: Your performance will be evaluated based on the accuracy of your responses
-    and the speed at which you provide them. A higher accuracy rate and faster response
-    times typically indicate better cognitive function.
+    and the speed at which you provide them. Press Y if the choice matches and N
+    if it does not.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

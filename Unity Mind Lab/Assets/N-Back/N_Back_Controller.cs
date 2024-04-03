@@ -159,23 +159,24 @@ public class N_Back_Controller : MonoBehaviour
         outputCount++;
     }
 
-    public void GetAnswer(){//to get answers from user based on mouseclick
+    public void GetAnswer(string str){//to get answers from user based on mouseclick
 
         if(stimulusCount<nthNumber){
             
         }
         else{
             
+            answers[outputCount]= str;//adds choice to list
 
             CanvasRenderer buttonRenderer = letterButton.GetComponent<CanvasRenderer>();
-            if(selectedLetter ==stimuli[outputCount-nthNumber]){
-                answers[outputCount] ="Y";//adds a y to answers list
+            if((selectedLetter ==stimuli[outputCount-nthNumber]&& str=="Y")||selectedLetter !=stimuli[outputCount-nthNumber]&& str=="N"){//if choice was correct
+                //answers[outputCount] ="Y";//adds a y to answers list
                 buttonRenderer.SetColor(goodColor);//sets button to green
                 
 
             }
             else{
-                answers[outputCount]="N";//ands an n to answers list
+                //answers[outputCount]="N";//ands an n to answers list
                 buttonRenderer.SetColor(badColor);//sets button to red
             }
             timeStampAnswer[outputCount]=timer.GetElapsedTimeMilliseconds();
@@ -279,10 +280,15 @@ public class N_Back_Controller : MonoBehaviour
 
         }
 
-         if(Input.GetMouseButtonDown(0)&& !isMovingToFront)//listener, with a guard to not go when the button is not shown.
+        if(Input.GetKeyDown(KeyCode.Y)&& !isMovingToFront)//listener, with a guard to not go when the button is not shown.
         {
-            GetAnswer();
+            GetAnswer("Y");
         }
+
+        if(Input.GetKeyDown(KeyCode.N)&& !isMovingToFront){
+            GetAnswer("N");
+        }
+
     }
 
 
