@@ -35,7 +35,7 @@ public class N_Back_Controller : MonoBehaviour
 
     private string nthLetter;//for holding string of nth letter back
 
-    private bool buttonsBool =false;//if true, use mouseclick on buttons for input. if false, use keys "y" and "n"
+    //private bool buttonsBool =false;//if true, use mouseclick on buttons for input. if false, use keys "y" and "n"
 
     private List<string> stimuli = new List<string>(); // List to store the selected letters
     private List<string> answers = new List<string>(); // List to store user answers
@@ -95,7 +95,7 @@ public class N_Back_Controller : MonoBehaviour
         if (stimulusCount > nthNumber && Random.value <= nthProb)
         {
             // Select the nth letter
-            selectedLetter = nthLetter;
+            selectedLetter = stimuli[outputCount-nthNumber];
             nthProb=0.2f;
             
         }
@@ -150,7 +150,7 @@ public class N_Back_Controller : MonoBehaviour
 
         }
         else{
-            nthLetter = stimuli[stimulusCount-nthNumber+1];
+            nthLetter = stimuli[stimulusCount-nthNumber];
         }
         // Update flags and move count
         isMovingToBack = false;
@@ -168,7 +168,7 @@ public class N_Back_Controller : MonoBehaviour
             
 
             CanvasRenderer buttonRenderer = letterButton.GetComponent<CanvasRenderer>();
-            if(selectedLetter ==nthLetter){
+            if(selectedLetter ==stimuli[outputCount-nthNumber]){
                 answers[outputCount] ="Y";//adds a y to answers list
                 buttonRenderer.SetColor(goodColor);//sets button to green
                 
@@ -187,12 +187,12 @@ public class N_Back_Controller : MonoBehaviour
     {
         string[] lines = File.ReadAllLines(path);
         movementInterval = float.Parse(lines[1]);
-        numRuns = int.Parse(lines[3]);
+        numRuns = int.Parse(lines[3])-1;
         nthNumber = int.Parse(lines[5]);
         totalStimuli = int.Parse(lines[7]);
         nthProb = float.Parse(lines[9]);
-        //buttonsBool = bool.Parse(lines[11]);
-        //outFile = lines[13];
+        intervalChange  = float.Parse(lines[11]);
+        
 
 
     }
@@ -263,6 +263,7 @@ public class N_Back_Controller : MonoBehaviour
             nextMovementTime = timer.GetElapsedTimeMilliseconds() +3000f;
             movementInterval= movementInterval - intervalChange;
             buttonText.text = "Run " + (runCount+1).ToString();
+            
 
 
 
