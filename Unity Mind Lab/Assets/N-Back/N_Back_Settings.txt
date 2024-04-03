@@ -1,0 +1,12 @@
+movementInterval
+500
+numRuns
+1
+nthNumber
+1
+totalStimuli
+15
+nthProb
+.15
+intervalChange
+0
