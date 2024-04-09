@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSumValue: 20
   trialTime:
-  - 0.3
-  - 0.3
-  - 10
+  - 0.1
+  - 0.1
+  - 0.1
   stimulusInterval:
   - 3
   - 2
   - 1.5
-  practiceMode: 0
+  practiceMode: 1
   audioStimuli: 1

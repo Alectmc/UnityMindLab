@@ -82,12 +82,11 @@ public class PASAT : MonoBehaviour
             float timeRemaining = roundTime - Time.time;
             progressBar.value = Mathf.Clamp01(timeRemaining / (trialTime[currentRound] * 60f));
 
-            currentTime = (Time.time - startTime) * 1000f;                    // Current time in ms
-
             // Display new stimuli every [stimulusInterval] seconds
             if (audioStimuli)
                 PlayNumberAudio(currentStimuli + 1);                          // playing stimuli audio 
             yield return new WaitForSeconds(stimulusInterval[currentRound]);  // Waits [stimulusInterval] seconds
+            currentTime = (Time.time - startTime) * 1000f;                    // current time in ms
             // If answer is correct, add point
             if (currentSum == userAnswer && answered)
                 point += 1;

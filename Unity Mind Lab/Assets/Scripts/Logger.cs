@@ -5,20 +5,37 @@ using UnityEngine;
 
 public class Logger : MonoBehaviour
 {
-    private string folderPath;
-    private string filePath;
-    private StreamWriter writer;
+    public PasatSettings settings;
+    private string patientFolderPath;
+    private string settingsFolderPath;
+    private string patientFilePath;
+    private string settingsFilePath;
+    private StreamWriter patientWriter;
+    private StreamWriter settingsWriter;
 
     private void Start()
     {
-        folderPath = Path.Combine(Application.dataPath, "PatientLogs");
-        if (!Directory.Exists(folderPath))
+        patientFolderPath = Path.Combine(Application.dataPath, "PatientLogs");
+        settingsFolderPath = Path.Combine(Application.dataPath, "SettingsLogs");
+        if (!Directory.Exists(patientFolderPath))
         {
             try
             {
-                Directory.CreateDirectory(folderPath);
+                Directory.CreateDirectory(patientFolderPath);
             }
             catch(System.Exception e)
+            {
+                Debug.Log("Error creating directory: " + e.Message);
+                return;
+            }
+        }
+        if (!Directory.Exists(settingsFolderPath))
+        {
+            try
+            {
+                Directory.CreateDirectory(settingsFolderPath);
+            }
+            catch (System.Exception e)
             {
                 Debug.Log("Error creating directory: " + e.Message);
                 return;
@@ -28,22 +45,42 @@ public class Logger : MonoBehaviour
 
     public void InitializeFile(string timeStamp)
     {
-        filePath = Path.Combine(folderPath, timeStamp + "_pasat.csv");
+        patientFilePath = Path.Combine(patientFolderPath, timeStamp + "_pasat.csv");
+        settingsFilePath = Path.Combine(settingsFolderPath, timeStamp + "_pasat.csv");
         try
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(patientFilePath))
             {
-                writer = new StreamWriter(filePath, true);
+                patientWriter = new StreamWriter(patientFilePath, true);
                 string header = "Round,Trial,Stimuli,Correct Sum,Selected Sum,Points,Response Time,Time Log";
-                writer.WriteLine(header);
-                writer.Flush();
+                patientWriter.WriteLine(header);
+                patientWriter.Flush();
             }
             else 
             {
-                writer = new StreamWriter(filePath, true);
+                patientWriter = new StreamWriter(patientFilePath, true);
             }
         }
         catch(System.Exception e) 
+        {
+            Debug.LogError("Error initializing file: " + e.Message);
+        }
+        try
+        {
+            if (!File.Exists(settingsFilePath))
+            {
+                settingsWriter = new StreamWriter(settingsFilePath, true);
+                string pasatSettings = "Max Sum Value = " + settings.maxSumValue + 
+                                       "\nTrial Times = " + string.Join(", ", settings.trialTime) + 
+                                       "\nStimulus Intervals = " + string.Join(", ", settings.stimulusInterval) + 
+                                       "\nPractice Mode = " + settings.practiceMode + 
+                                       "\nAudio Stimuli = " + settings.audioStimuli;
+                settingsWriter.WriteLine(pasatSettings);
+                settingsWriter.Flush();
+                settingsWriter.Close();
+            }
+        }
+        catch (System.Exception e)
         {
             Debug.LogError("Error initializing file: " + e.Message);
         }
@@ -51,7 +88,7 @@ public class Logger : MonoBehaviour
 
     public void LogData(int round, int trial, int stimuli, int correctSum, int selectedSum, int point, float responseTime, float timeLog)
     {
-        if (writer == null)
+        if (patientWriter == null)
         {
             Debug.LogError("Writer is null. File not initialized.");
             return;
@@ -59,8 +96,8 @@ public class Logger : MonoBehaviour
         try
         {
             string line = $"{round},{trial},{stimuli},{correctSum},{selectedSum},{point},{responseTime},{timeLog}";
-            writer.WriteLine(line);
-            writer.Flush();
+            patientWriter.WriteLine(line);
+            patientWriter.Flush();
         }
         catch (System.Exception e) 
         {
@@ -70,6 +107,6 @@ public class Logger : MonoBehaviour
 
     public void CloseFile()
     {
-        writer.Close();
+        patientWriter.Close();
     }
 }

@@ -11,8 +11,7 @@ public class InstructionUI : MonoBehaviour
     //Incomplete
     //Set likert scale to here or somewhere in PASAT script actual
 
-
-    public TextMeshProUGUI welcomeText;
+    public TMP_Text buttonText;
     public TextMeshProUGUI instructText;
     public TextMeshProUGUI timeIntervalInfo;
     public PasatSettings settings;
@@ -28,33 +27,34 @@ public class InstructionUI : MonoBehaviour
         trialTime = settings.trialTime;
         stimulusInterval = settings.stimulusInterval;
         displayInstruct();
-        //checkStatus();
-
     }
 
     void displayInstruct()
     {
         if (settings.practiceMode == true) //Display practice mode instruction
         {
-            welcomeText.text = "Welcome to the PASAT test!";
             instructText.text = "Practice round is active, the system will display eleven practice stimuli before official test begins.";
-            timeIntervalInfo.text = "Stimuli value interval time: 3 seconds";
+            timeIntervalInfo.text = "Response Time:\n3 seconds";
+            buttonText.text = "Begin";
         }
         else if (settings.practiceMode == false && currentRound == 0) //Display round 1 instruction
         {
-            instructText.text = "Practice round complete.";
-            timeIntervalInfo.text = "Round " + (currentRound + 1) + " trial time: " + (trialTime[currentRound]) + " minutes / Stimuli value interval time: " + (stimulusInterval[currentRound]) + " seconds";
+            instructText.text = "";
+            timeIntervalInfo.text = "Round " + (currentRound + 1) + "\nTrial Time: " + (trialTime[currentRound]) + " minutes\nResponse Time: " + (stimulusInterval[currentRound]) + " seconds";
+            buttonText.text = "Begin";
             currentRound++;
         }
         else if (currentRound < trialTime.Length) //Display rest of the rounds' instructions
         {
-            instructText.text = "Round " + (currentRound) + " complete.";
-            timeIntervalInfo.text = "Round " + (currentRound + 1) + " trial time: " + (trialTime[currentRound]) + " minutes / Stimuli value interval time: " + (stimulusInterval[currentRound]) + " seconds";
+            instructText.text = "Round " + (currentRound) + " Complete.";
+            timeIntervalInfo.text = "Round " + (currentRound + 1) + "\nTrial Time: " + (trialTime[currentRound]) + " minutes\nResponse Time: " + (stimulusInterval[currentRound]) + " seconds";
+            buttonText.text = "Begin";
             currentRound++;
         }
         else //Confirm test is complete, have not error checked.
         {
             instructText.text = "PASAT test complete.";
+            buttonText.text = "Return";
         }
     }
     
@@ -62,4 +62,5 @@ public class InstructionUI : MonoBehaviour
     {
         SceneManager.LoadScene("PASAT");
     }
+
 }
