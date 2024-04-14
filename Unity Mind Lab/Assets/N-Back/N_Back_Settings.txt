@@ -3,7 +3,7 @@ movementInterval
 numRuns
 1
 nthNumber
-1
+2
 totalStimuli
 15
 nthProb

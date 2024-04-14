@@ -46,7 +46,7 @@ public class N_Back_Controller : MonoBehaviour
 
     private List<int> runList = new List<int>();
 
-    private bool answered;//flag for whether the user answered or not
+    private bool answered=false;//flag for whether the user answered or not
 
     private float nthProb=0.15f;
 
@@ -58,8 +58,9 @@ public class N_Back_Controller : MonoBehaviour
 
     private string selectedLetter ="";
 
-    private string outFile = "C:/Users/layto/OneDrive/Desktop/se/UnityMindLab/Unity Mind Lab/Assets/N-Back/test.csv";
+    private string settingsPath;
 
+    private string outFile;
     
 
 
@@ -68,7 +69,7 @@ public class N_Back_Controller : MonoBehaviour
     {
 
         // Path to the text file in the Assets folder
-        string settingsPath = Application.dataPath +"/N-Back/N_Back_Settings.txt";
+        settingsPath = Application.dataPath +"/N-Back/N_Back_Settings.txt";
         outFile = Application.dataPath + "/N-Back/test.csv";
         
 
@@ -157,11 +158,13 @@ public class N_Back_Controller : MonoBehaviour
         moveCount++;
         stimulusCount++;
         outputCount++;
+
+        answered=false;
     }
 
     public void GetAnswer(string str){//to get answers from user based on mouseclick
 
-        if(stimulusCount<nthNumber){
+        if(stimulusCount<nthNumber||answered){
             
         }
         else{
@@ -179,6 +182,7 @@ public class N_Back_Controller : MonoBehaviour
                 //answers[outputCount]="N";//ands an n to answers list
                 buttonRenderer.SetColor(badColor);//sets button to red
             }
+            answered = true;
             timeStampAnswer[outputCount]=timer.GetElapsedTimeMilliseconds();
         }
     }
