@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+
 using System.IO;
 using TMPro;
 
@@ -39,6 +41,7 @@ public class N_Back_Controller : MonoBehaviour
 
     private List<string> stimuli = new List<string>(); // List to store the selected letters
     private List<string> answers = new List<string>(); // List to store user answers
+    private List<string> correct = new List<string>();// List to store correct or not
 
     private List<float> timeStampAnswer = new List<float>();
 
@@ -61,19 +64,44 @@ public class N_Back_Controller : MonoBehaviour
     private string settingsPath;
 
     private string outFile;
+
+    private string folderPath;
     
+    private string patientID;
+    private static string timeStamp = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
 
 
+
+    private void Awake(){
+        patientID = PlayerPrefs.GetString("PatientID","DefaultValue");
+    }
 
     void Start()
     {
 
+        folderPath = Path.Combine(Application.dataPath, "PatientLogs");
+        if (!Directory.Exists(folderPath))
+        {
+            try
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            catch(System.Exception e)
+            {
+                Debug.Log("Error creating directory: " + e.Message);
+                return;
+            }
+        }
+
         // Path to the text file in the Assets folder
         settingsPath = Application.dataPath +"/N-Back/N_Back_Settings.txt";
-        outFile = Application.dataPath + "/N-Back/test.csv";
-        
 
-        Debug.Log("File path: " + settingsPath); // Debug log the file path
+
+
+
+
+        outFile = Application.dataPath +"/PatientLogs/"+patientID+"_"+timeStamp+"_N-Back.csv";
+
         
         ReadSettingsFromFile(settingsPath);
 
@@ -120,6 +148,7 @@ public class N_Back_Controller : MonoBehaviour
 
         timeStampStimuli.Add(timer.GetElapsedTimeMilliseconds());
         timeStampAnswer.Add(0f);
+        correct.Add("");//empty string for no response
 
         
 
@@ -175,12 +204,14 @@ public class N_Back_Controller : MonoBehaviour
             if((selectedLetter ==stimuli[outputCount-nthNumber]&& str=="Y")||selectedLetter !=stimuli[outputCount-nthNumber]&& str=="N"){//if choice was correct
                 //answers[outputCount] ="Y";//adds a y to answers list
                 buttonRenderer.SetColor(goodColor);//sets button to green
+                correct[outputCount]="C";
                 
 
             }
             else{
                 //answers[outputCount]="N";//ands an n to answers list
                 buttonRenderer.SetColor(badColor);//sets button to red
+                correct[outputCount]="X";
             }
             answered = true;
             timeStampAnswer[outputCount]=timer.GetElapsedTimeMilliseconds();
@@ -203,7 +234,7 @@ public class N_Back_Controller : MonoBehaviour
     }
 
     private void WriteToFile(string outFile){
-        string header = "run,stimuli,answer,StimulusTime,AnswerTime"; 
+        string header = "Round,Stimuli,Answer,Correct,Stimulus Time,Response Time"; 
 
         // Open the file for writing
         using (StreamWriter writer = new StreamWriter(outFile))
@@ -215,7 +246,7 @@ public class N_Back_Controller : MonoBehaviour
             for (int i = 0; i < stimuli.Count; i++)
             {
                 Debug.Log("writing");
-                string line = $"{runList[i]},{stimuli[i]},{answers[i]},{timeStampStimuli[i]},{timeStampAnswer[i]}";
+                string line = $"{runList[i]},{stimuli[i]},{answers[i]},{correct[i]},{timeStampStimuli[i]},{timeStampAnswer[i]}";
                 writer.WriteLine(line);
             }
         }
@@ -280,6 +311,8 @@ public class N_Back_Controller : MonoBehaviour
             timer.StopTimer();
             Debug.Log("end test");
             WriteToFile(outFile);
+            SceneManager.LoadScene("SelectTest");
+
 
 
         }
@@ -294,6 +327,8 @@ public class N_Back_Controller : MonoBehaviour
         }
 
     }
+
+
 
 
 
