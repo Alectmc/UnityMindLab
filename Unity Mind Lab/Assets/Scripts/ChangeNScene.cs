@@ -8,4 +8,8 @@ public class ChangeNScene : MonoBehaviour
     public void changeNBack() {  
         SceneManager.LoadScene("N-back_start-screen");  
     }  
+
+    public void changeNBackSettings() {  
+        SceneManager.LoadScene("N-BACK-SETTINGS");  
+    }  
 }   
