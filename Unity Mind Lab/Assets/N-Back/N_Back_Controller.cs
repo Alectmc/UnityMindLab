@@ -14,6 +14,8 @@ public class N_Back_Controller : MonoBehaviour
                               "S","T","U","V","W","X","Y","Z"}; // Array of letters A through Z
     public Timer timer; // Reference to the Timer script
 
+    public Slider progressBar; //progress bar for timer
+
     public Button letterButton;// Reference to the button
 
     public TextMeshProUGUI buttonText;//Reference to the text of the button
@@ -111,7 +113,7 @@ public class N_Back_Controller : MonoBehaviour
     void Update()
     {
         test();
-
+        UpdateProgressBar();
     }
 
     void ShowButton()
@@ -253,8 +255,47 @@ public class N_Back_Controller : MonoBehaviour
     }
 
 
+    private float timerStartTime; // Store the start time of the current interval
+    private float currentIntervalProgress; // Track progress within the current interval
+    private void UpdateProgressBar()
+    {
+        if (timer.isRunning)
+        {
+            // Calculate elapsed time since the start of the current interval
+            float elapsedTime = (timer.GetElapsedTimeMilliseconds() - timerStartTime) / 1000f; // Convert to seconds
+
+            // Calculate total time for the interval (e.g., movementInterval in seconds)
+            float totalIntervalTime = movementInterval / 1000f; // Convert to seconds
+
+            // Calculate progress within the current interval (in reverse)
+            currentIntervalProgress = 1f - Mathf.Clamp01(elapsedTime / totalIntervalTime); // Fill in reverse
+
+            // Update the progress bar value
+            progressBar.value = currentIntervalProgress;
+
+            // Check if the current interval has completed
+            if (elapsedTime >= totalIntervalTime)
+            {
+                // Reset the timer start time to the current time
+                timerStartTime = timer.GetElapsedTimeMilliseconds();
+
+                // Reset the progress within the current interval
+                currentIntervalProgress = 1f; // Start from full (reverse)
+
+                // Update the progress bar value to full (reverse)
+                progressBar.value = currentIntervalProgress;
+            }
+        }
+        else
+        {
+            // If the timer is not running, reset the progress bar to its maximum value (1)
+            progressBar.value = 1f;
+            currentIntervalProgress = 1f; // Reset progress state to full (reverse)
+        }
+    }
+
     private void test(){
-                // Initialize the next movement time when the timer starts
+        // Initialize the next movement time when the timer starts
         if (timer.isRunning && nextMovementTime == 0f)
         {
             nextMovementTime = timer.GetElapsedTimeMilliseconds();
@@ -273,6 +314,7 @@ public class N_Back_Controller : MonoBehaviour
             if (isMovingToBack && timer.GetElapsedTimeMilliseconds() >= nextMovementTime)
             {
                 HideButton();
+                progressBar.value = 0f; //reset progress bar
             }
 
             // If neither movement is in progress, determine the next movement
@@ -299,12 +341,6 @@ public class N_Back_Controller : MonoBehaviour
             nextMovementTime = timer.GetElapsedTimeMilliseconds() +3000f;
             movementInterval= movementInterval - intervalChange;
             buttonText.text = "Run " + (runCount+1).ToString();
-            
-
-
-
-
-
         }
 
         if(runCount==numRuns && stimulusCount>=totalStimuli && timer.isRunning){//ending test and writing to csv
@@ -312,9 +348,6 @@ public class N_Back_Controller : MonoBehaviour
             Debug.Log("end test");
             WriteToFile(outFile);
             SceneManager.LoadScene("SelectTest");
-
-
-
         }
 
         if(Input.GetKeyDown(KeyCode.Y)&& !isMovingToFront)//listener, with a guard to not go when the button is not shown.

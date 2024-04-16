@@ -1,5 +1,5 @@
 movementInterval
-1000
+2000
 numRuns
 1
 nthNumber

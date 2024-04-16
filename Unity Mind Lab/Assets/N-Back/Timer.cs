@@ -10,7 +10,6 @@ public class Timer : MonoBehaviour
 
     public float ElapsedTimeMilliseconds;
 
-
     private void Update()
     {
         if (isRunning)
