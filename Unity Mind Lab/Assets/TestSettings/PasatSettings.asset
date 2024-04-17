@@ -16,10 +16,10 @@ MonoBehaviour:
   trialTime:
   - 0.3
   - 0.3
-  - 10
+  - 0.3
   stimulusInterval:
   - 3
   - 2
-  - 1.5
+  - 1
   practiceMode: 0
   audioStimuli: 1

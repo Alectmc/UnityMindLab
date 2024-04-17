@@ -7,15 +7,18 @@ using TMPro;
 
 public class LikertScript : MonoBehaviour
 {
-    private int userAnswer = -1;
+    private int userAnswer;
+    public static int[] answers;
     private static int currentRound = 1;                // Set to static in case of scene change for Instruction Scene
     public GameObject buttonPrefab;
     public TextMeshProUGUI questionText;
     public Transform responses;
+    public PasatSettings settings;
 
     // Start is called before the first frame update
     void Start()
     {
+        answers = new int[settings.trialTime.Length];
         GenerateButtons();
     }
 
@@ -54,11 +57,13 @@ public class LikertScript : MonoBehaviour
             TMP_Text buttonText = button.GetComponentInChildren<TMP_Text>();
             Button btn = button.GetComponentInChildren<Button>();
             buttonText.text = i.ToString();
-            btn.onClick.AddListener(() => {
+            btn.onClick.AddListener(() =>
+            {
                 userAnswer = int.Parse(buttonText.text);
+                answers[currentRound - 1] = userAnswer;
                 //Debug.Log(userAnswer); 
                 //To Do: Print userAnswer to csv?
-                if (currentRound < 3)
+                if (currentRound < settings.trialTime.Length)
                 {
                     currentRound++;
                     SceneManager.LoadScene("InstructionScene");
@@ -70,6 +75,7 @@ public class LikertScript : MonoBehaviour
                         Destroy(child.gameObject);
                     }
                     questionText.text = "Test Complete";
+                    StartCoroutine(ReturnToMenu());
                 }
             });
 
@@ -87,4 +93,11 @@ public class LikertScript : MonoBehaviour
             buttonCount++;                                                                                        // Increment buttonCount
         }
     }
+
+    IEnumerator ReturnToMenu()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("SelectTest");
+    }
+
 }

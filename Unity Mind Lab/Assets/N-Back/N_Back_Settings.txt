@@ -1,12 +1,12 @@
 movementInterval
 2000
 numRuns
-1
+2
 nthNumber
 2
 totalStimuli
 10
 nthProb
-.20
+0.15
 intervalChange
 500

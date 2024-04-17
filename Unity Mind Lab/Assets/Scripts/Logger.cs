@@ -8,10 +8,17 @@ public class Logger : MonoBehaviour
     private string folderPath;
     private string filePath;
     private StreamWriter writer;
+    private string participantId;
+    public PasatSettings settings;
+
+    private void Awake()
+    {
+        participantId = PlayerPrefs.GetString("PatientID", "DefaultValue");
+    }
 
     private void Start()
     {
-        folderPath = Path.Combine(Application.dataPath, "PatientLogs");
+        folderPath = Path.Combine(Application.dataPath, "ParticipantLogs");
         if (!Directory.Exists(folderPath))
         {
             try
@@ -28,7 +35,7 @@ public class Logger : MonoBehaviour
 
     public void InitializeFile(string timeStamp)
     {
-        filePath = Path.Combine(folderPath, timeStamp + "_pasat.csv");
+        filePath = Path.Combine(folderPath, participantId + "_" + timeStamp + "_pasat.csv");
         try
         {
             if (!File.Exists(filePath))
@@ -56,6 +63,7 @@ public class Logger : MonoBehaviour
             Debug.LogError("Writer is null. File not initialized.");
             return;
         }
+
         try
         {
             string line = $"{round},{trial},{stimuli},{correctSum},{selectedSum},{point},{responseTime},{timeLog}";

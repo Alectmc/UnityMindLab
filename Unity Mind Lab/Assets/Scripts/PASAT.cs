@@ -113,11 +113,7 @@ public class PASAT : MonoBehaviour
 
         currentRound++;
         stimuliText.text = "";
-        message.text = "Round " + (currentRound) + " complete";
-        if (currentRound > trialTime.Length)
-        {
-            logger.CloseFile();
-        }
+        message.text = "Round " + (currentRound) + " complete"; 
         StopCoroutine(timerCoroutine);
         yield return new WaitForSeconds(3f);
         SceneManager.LoadScene("LikertScale");

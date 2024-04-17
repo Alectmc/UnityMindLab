@@ -81,7 +81,7 @@ public class N_Back_Controller : MonoBehaviour
     void Start()
     {
 
-        folderPath = Path.Combine(Application.dataPath, "PatientLogs");
+        folderPath = Path.Combine(Application.dataPath, "ParticipantLogs");
         if (!Directory.Exists(folderPath))
         {
             try
@@ -102,7 +102,7 @@ public class N_Back_Controller : MonoBehaviour
 
 
 
-        outFile = Application.dataPath +"/PatientLogs/"+patientID+"_"+timeStamp+"_N-Back.csv";
+        outFile = Application.dataPath +"/ParticipantLogs/"+patientID+"_"+timeStamp+"_N-Back.csv";
 
         
         ReadSettingsFromFile(settingsPath);
